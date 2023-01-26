@@ -43,7 +43,7 @@ public class seleniumTest {
     }
 
     @Test
-    void shouldTestWithBug() {
+    void shouldTestWithBugName() {
         driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Ivanov Ivan");
         driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79057894561");
@@ -51,6 +51,43 @@ public class seleniumTest {
         driver.findElement(By.cssSelector("button")).click();
         String expected = "Фамилия и имя\n" +
                 "Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.";
+        String actual = driver.findElement(By.cssSelector("[data-test-id='name'].input_invalid")).getText().trim();
+        Assertions.assertEquals(expected, actual);
+
+    }
+
+    @Test
+    void shouldTestWithBugPhone() {
+        driver.get("http://localhost:9999");
+        driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Иванов Иван");
+        driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("");
+        driver.findElement(By.cssSelector("[data-test-id=agreement]")).click();
+        driver.findElement(By.cssSelector("button")).click();
+        String expected = "Мобильный телефон\n" +
+                "Поле обязательно для заполнения";
+        String actual = driver.findElement(By.cssSelector("[data-test-id='phone'].input_invalid")).getText().trim();
+        Assertions.assertEquals(expected, actual);
+
+    }
+
+    @Test
+    void shouldTestWithBugClick() {
+        driver.get("http://localhost:9999");
+        driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Иванов Иван");
+        driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79057894561");
+        driver.findElement(By.cssSelector("button")).click();
+        String expected = "Мобильный телефон\n" + "На указанный номер моб. тел. будет отправлен смс-код для подтверждения заявки на карту. Проверьте, что номер ваш и введен корректно.";
+        String actual = driver.findElement(By.cssSelector("[data-test-id='phone'].input_has-label")).getText().trim();
+        Assertions.assertEquals(expected, actual);
+
+    }
+    @Test
+    void shouldTestWithBugEmpty() {
+        driver.get("http://localhost:9999");
+        driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("");
+        driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("");
+        driver.findElement(By.cssSelector("button")).click();
+        String expected = "Фамилия и имя\n"  + "Поле обязательно для заполнения";
         String actual = driver.findElement(By.cssSelector("[data-test-id='name'].input_invalid")).getText().trim();
         Assertions.assertEquals(expected, actual);
 
