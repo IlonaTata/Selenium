@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-public class seleniumTest {
+public class SeleniumTest {
 
     WebDriver driver;
 
@@ -56,8 +56,9 @@ public class seleniumTest {
 
     }
 
+
     @Test
-    void shouldTestWithBugPhone() {
+    void shouldTestWithBugEmptyPhone() {
         driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Иванов Иван");
         driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("");
@@ -71,7 +72,7 @@ public class seleniumTest {
     }
 
     @Test
-    void shouldTestWithBugClick() {
+    void shouldTestWithBugClickEmpty() {
         driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Иванов Иван");
         driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79057894561");
@@ -92,6 +93,17 @@ public class seleniumTest {
         Assertions.assertEquals(expected, actual);
 
     }
+    @Test
+    void shouldTestWithBugPhone() {
+        driver.get("http://localhost:9999");
+        driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Иванов Иван");
+        driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("89034567890");
+        driver.findElement(By.cssSelector("[data-test-id=agreement]")).click();
+        driver.findElement(By.cssSelector("button")).click();
+        String expected = "Мобильный телефон\n" + "Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.";
+        String actual = driver.findElement(By.cssSelector("[data-test-id='phone'].input_has-label")).getText().trim();
+        Assertions.assertEquals(expected, actual);
 
+    }
 }
 
