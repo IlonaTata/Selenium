@@ -77,22 +77,23 @@ public class SeleniumTest {
         driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Иванов Иван");
         driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79057894561");
         driver.findElement(By.cssSelector("button")).click();
-        String expected = "Мобильный телефон\n" + "На указанный номер моб. тел. будет отправлен смс-код для подтверждения заявки на карту. Проверьте, что номер ваш и введен корректно.";
-        String actual = driver.findElement(By.cssSelector("[data-test-id='phone'].input_has-label")).getText().trim();
-        Assertions.assertEquals(expected, actual);
+        Assertions.assertTrue(driver.findElement(By.cssSelector("[data-test-id='agreement'].input_invalid")).isDisplayed());
+
 
     }
+
     @Test
     void shouldTestWithBugEmpty() {
         driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("");
         driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("");
         driver.findElement(By.cssSelector("button")).click();
-        String expected = "Фамилия и имя\n"  + "Поле обязательно для заполнения";
+        String expected = "Фамилия и имя\n" + "Поле обязательно для заполнения";
         String actual = driver.findElement(By.cssSelector("[data-test-id='name'].input_invalid")).getText().trim();
         Assertions.assertEquals(expected, actual);
 
     }
+
     @Test
     void shouldTestWithBugPhone() {
         driver.get("http://localhost:9999");
@@ -101,7 +102,7 @@ public class SeleniumTest {
         driver.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         driver.findElement(By.cssSelector("button")).click();
         String expected = "Мобильный телефон\n" + "Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.";
-        String actual = driver.findElement(By.cssSelector("[data-test-id='phone'].input_has-label")).getText().trim();
+        String actual = driver.findElement(By.cssSelector("[data-test-id='phone'].input_has-label.input_invalid")).getText().trim();
         Assertions.assertEquals(expected, actual);
 
     }
